@@ -28,12 +28,12 @@ class TestAPI(unittest.TestCase):
 
     def tearDown(self):
         """ Test teardown """
+        session.close()
         # Remove the tables and their data from the database
         Base.metadata.drop_all(engine)
 
         # Delete test upload folder
         shutil.rmtree(upload_path())
-
 
     def test_file_upload(self):
         data={
@@ -120,5 +120,4 @@ class TestAPI(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.mimetype, "text/plain")
         self.assertEqual(response.data, "File contents")
-
 
