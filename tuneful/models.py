@@ -10,7 +10,7 @@ from database import Base, engine
 class Song(Base):
     __tablename__ = "songs"
 
-    id = Column(Integer, Sequence("song_id_sequence"), primary_key=True)
+    id = Column(Integer, primary_key=True)
     file = relationship("File", uselist=False, backref="song")
 
     def asDictionary(self):
@@ -19,7 +19,7 @@ class Song(Base):
 class File(Base):
     __tablename__ = "files"
 
-    id = Column(Integer, Sequence("post_id_sequence"), primary_key=True)
+    id = Column(Integer, primary_key=True)
     filename = Column(String(1024))
     song_id = Column(Integer, ForeignKey("songs.id"))
 
