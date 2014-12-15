@@ -2,6 +2,7 @@ var Tuneful = function() {
     // Initialize the javascript to show the waveform in the bottom bar
     this.wavesurfer = Object.create(WaveSurfer);
     this.wavesurfer.init({container: '#waveform'});
+    this.wavesurfer.on("finish", this.stop.bind(this));
 
     // Call the onPlayButtonClick function when the play button is clicked
     this.playButton = $("#play-button");
@@ -36,7 +37,6 @@ var Tuneful = function() {
 Tuneful.prototype.onSongClicked = function(event) {
     // Called when we load a new song
     this.pause();
-    this.wavesurfer.clearMarks();
     var song = $(event.target);
     // Reload the waveform from the path data attribute
     this.wavesurfer.load(song.data("path"));
@@ -79,6 +79,17 @@ Tuneful.prototype.pause = function() {
     this.luke.toggleClass("spin");
     this.playing = false;
 };
+
+Tuneful.prototype.stop = function() {
+    if (!this.playing) {
+        return;
+    }
+    // Pause the song, and set the pause icon
+    this.wavesurfer.stop();
+    this.togglePlayIcon();
+    this.luke.toggleClass("spin");
+    this.playing = false;
+}
 
 Tuneful.prototype.onAddButtonClicked = function() {
     // Fake a click on the file input so we can choose a song
